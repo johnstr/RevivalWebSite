@@ -1,0 +1,110 @@
+@font-face {
+  font-family: "Intro-Black-Caps";
+  src: url("../fonts/Intro-Black-Caps.otf");
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../fonts/Lora/Lora-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("../fonts/Lora/Lora-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Karla";
+  src: url("../fonts/karla/Karla-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Karla";
+  src: url("../fonts/karla/Karla-Bold.ttf");
+  font-weight: bold;
+}
+
+$font-stack: 'Karla', 'Times New Roman', serif;
+$primary-color: #212529;
+$font-weight-nav: 800;
+$font-stack-nav: "Intro-Black-Caps", 'Open Sans', 'Helvetica Neue', Helveticaa, Arial, sans-serif;
+$font-color: #1DB954;
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  font-weight: $font-weight-nav;
+  font-family: $font-stack-nav;
+}
+
+
+//font-family: Karla,Helvetica,Arial,sans-serif;
+.container{
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.row{
+  margin-left: 0;
+  margin-right: 0;
+}
+
+body {
+  font-size: 14px;
+  color: $primary-color;
+  font-family: $font-stack;
+}
+
+.h7{
+  @extend h6;
+  font-size: 15px;
+}
+
+
+.h8{
+  @extend h6;
+  font-size: 12px;
+}
+
+
+p {
+  line-height: 1.5;
+  margin-bottom: 0;
+ // margin: 30px 0;
+
+  a{
+    text-decoration: underline;
+  }
+
+  &.f-initial{
+    font-size: initial;
+  }
+
+}
+
+a{
+  color: $font-color;
+}
+
+a:hover{
+ // color: black;
+  color: rgba(29,185,84, 0.8);
+}
+
+@media only screen and (min-width: 992px) {
+  .w-lg-50{
+      width: 50%!important;
+  }
+
+   .w-lg-100{
+      width: 100%!important;
+  }
+
+}
+
+
+

@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNet.Identity
+
+@{var scroll = ""; }
+@if (ViewContext.RouteData.Values["controller"].ToString() == "Home" && ViewContext.RouteData.Values["action"].ToString() == "Index")
+{
+    scroll = "home-page not-scrolled";
+}
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark fixed-top @scroll" id="mainNav">
+    <div class="container navbar-inner">
+        @Html.ActionLink("Revival BC", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+        @if (Request.IsAuthenticated)
+        {
+            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fa fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown">
+                            @Html.ActionLink("Users", "Users", "Admin", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Media", "Media", "Admin", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Events", "Events", "Admin", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Manage" class="nav-link"><i class="fa fa-user" aria-hidden="true"></i> @User.Identity.GetUserName()</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link"><i class="fa fa-sign-out" aria-hidden="true"></i>Log off</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+        }
+        else
+        {
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fa fa-bars"></i>
+            </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="newabout.html" data-toggle="dropdown" data-hover="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    About
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
+                                    <a class="dropdown-item" href="about.html#leadership">Leadership</a>
+                                    <a class="dropdown-item" href="about.html#beliefs">Beliefs</a>
+                                    <a class="dropdown-item" href="about.html#history">History</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="events.html">Events</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="ministries.html">Projects & Ministries</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="media.html">Media</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link give-but" href="services.html">Give now</a>
+                            </li>
+                        </ul>
+                    </div>
+        }
+    </div>
+</nav>
+
+
+

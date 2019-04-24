@@ -1,0 +1,42 @@
+﻿@model RevivalWebSite.Models.Media
+@using System.Threading;
+
+<div class="card mb-3 @ViewBag.Hide">
+   @if (User.IsInRole("admin") && ViewContext.RouteData.Values["controller"].ToString() == "Admin")
+    {
+    <div class="card-header text-right p-0">
+        <div data-toggle="modal" data-target="#addMedia" class="btn btn-default" onclick="editOrCreateMedia(@Model.ID)"><i class="fa fa-edit"></i></div>
+        <div class="btn btn-default" data-toggle="modal" data-target="#deleteMedia" onclick="deleteMedia(@Model.ID)"><i class="fa fa-trash" aria-hidden="true"></i></div>
+    </div>
+   }
+    <div class="card-img-top embed-responsive embed-responsive-16by9" >
+        @if (!@Model.VideoURL.Contains("http"))
+        {
+        <video controls>
+            <source class="embed-responsive-item" src="@Model.VideoURL" type="video/mp4" />
+            <source class="embed-responsive-item" src="@Model.VideoURL" type="video/ogg" />
+            <source class="embed-responsive-item" src="@Model.VideoURL" type="video/webm" />
+        </video>
+        }
+        else
+        {
+        <iframe class="embed-responsive-item" src="@Model.VideoURL" allowfullscreen></iframe>
+        }
+    </div>
+    <div class="card-body">
+        <h6 class="card-title">@Model.Name</h6>
+        <p class="card-text">@Model.Description</p>
+    </div>
+    <div class="card-footer">
+        @if (Thread.CurrentThread.CurrentCulture.Name.Contains("uk")) {
+           <span> Опубліковано @Model.PostDate.ToString("MMM dd, yyyy")</span>
+           <p>@Model.Category.Name</p>
+        }
+        else
+        {
+            <span> Posted on @Model.PostDate.ToString("MMM dd, yyyy")</span>
+            <p>@Model.Category.Name_ENG</p>
+        }
+    </div>
+</div>
+

@@ -1,0 +1,237 @@
+﻿@model RevivalWebSite.ViewModels.MediaViewModel
+@{
+    ViewBag.Name = "New Media Element";
+}
+
+<div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@ViewBag.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            @using (Ajax.BeginForm("CreateOrEditMedia", "Admin", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "mediaList", OnSuccess = "AjaxSuccess", OnBegin = "AjaxValidate" }, new { @class = "form-horizontal", role = "form col", enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => Model.Id)
+                    @for (var i = 0; i < Model.Categories.Count; i++)
+                    {
+                        @Html.HiddenFor(m => Model.Categories[i].Id)
+                        @Html.HiddenFor(m => Model.Categories[i].Name)
+                    }
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Description, new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.CategoryID, new SelectList(Model.Categories, "Id", "Name"), "Select Category", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CategoryID, "", new { @class = "text-danger" })
+                    </div>
+
+                    @* Video Input section *@
+                    <div id="urlInput">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <input id="uploadFile" name="file" class="form-control" type="file" />
+                                <label for="uploadFile" class="btn btn-primary">Upload Video</label>
+                            </div>
+                            @Html.TextBoxFor(m => m.VideoURL, new { @class = "form-control", @placeholder = "Video URI" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.VideoURL, "", new { @class = "text-danger" })
+                    </div>
+
+                    @* Load picture  *@
+                    <div id="loadpic" class="form-group text-center d-none mt-2">
+                        <img src="/Resources/Img/loader-s.gif" width="100" height="100" alt="Loading...">
+                    </div>
+
+                    @* Progress Bar  *@
+                    <div id="loadbar" class="d-none">
+                        <span>Uploading...</span>
+                        <div  class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 0%;">
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Video frame section *@
+                    <div class="form-group image-block embed-responsive embed-responsive-16by9 d-none" id="videoFrame">
+                            <video controls class="embed-responsive-item" autoplay muted>
+                                <source src="@Model.VideoURL" type="video/mp4" />
+                                <source src="@Model.VideoURL" type="video/ogg" />
+                                <source src="@Model.VideoURL" type="video/webm" />
+                            </video>
+                            <iframe class="embed-responsive-item" src="@Model.VideoURL" allowfullscreen></iframe>
+                        <div class="overlay"></div>
+                        <div class="container-fluid text text-center">
+                            <button class="btn btn-primary h6 mt-4" type="button" onclick="otherVideo()">Other Video</button>
+                        </div>
+                    </div>
+              </div>
+
+                <div class="modal-footer">
+                        <input type="submit" value="Save Changes" class="btn btn-default" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            }
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+    //Form Validation
+    function AjaxValidate() {
+        var url = $("#VideoURL").val();
+        if (url == "") {
+            $('#VideoURL').parent().nextAll('span:first').html("Add video url or upload new video");
+            return false;
+        }else {
+            switch (true) {
+                case /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(url): {
+                    break;
+                }
+                case url.includes("/Resources/UploadedVideo/"): {
+                    break;
+                }
+                default: {
+                    $('#VideoURL').parent().nextAll('span:first').html("Not valid video url");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    //Hide modal if success
+    function AjaxSuccess() {
+        $("#mediaModal").modal("hide");
+    }
+
+
+    //Other Video
+    function otherVideo() {
+        var url = $("#VideoURL").val();
+        $("#VideoURL").val("");
+        $("#urlInput").removeClass("d-none");
+        $("#videoFrame").addClass("d-none");
+
+        $("video source").attr("src", null);
+        $("#videoFrame iframe").attr("src", null);
+        $("#videoFrame video").get(0).load();
+      
+        if (url.includes("/Resources/UploadedVideo/")) {
+            $.ajax({
+                type: "GET",
+                url: 'RemoveFiles',
+                data: { url: url },
+                contentType: 'application/json; charset=utf-8'
+            });
+        }
+    }
+
+
+    $(document).ready(function () {
+        if ($("#Id").val() != 0) {
+            $("#urlInput").addClass("d-none");
+            $("#videoFrame").removeClass("d-none");
+        }
+        else {
+            $("#urlInput").removeClass("d-none");
+            $("#videoFrame").addClass("d-none");
+        }
+
+        $('#VideoURL').on("focus", function () {
+            $("#loadpic").removeClass("d-none");
+        });
+
+        $('#VideoURL').on("blur", function () {
+            var url = $('#VideoURL').val();
+            if (url == "") {
+                $("#loadpic").addClass("d-none");
+                return;
+            }
+            switch (true) {
+                case url.includes("https://drive.google.com/"): {
+                    var url = url.match(/(.+)\/view/);
+                    url = url[1] + "/preview";
+                    $('#VideoURL').val(url);
+                    break;
+                }
+                case url.includes("https://www.youtube.com/"): {
+                    var url = url.replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/");
+                    $('#VideoURL').val(url);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+            $("#videoFrame iframe").attr('src', url)
+            $("#videoFrame").removeClass("d-none");
+            $("#loadpic").addClass("d-none");
+            $("#urlInput").addClass("d-none");
+            $("#fileInput").addClass("d-none");
+        });
+
+        $('#uploadFile').fileupload({
+            dataType: 'json',
+            url: 'UploadFiles',
+            autoUpload: true,
+            add: function (e, data) {
+                $("#urlInput").addClass("d-none");
+                $("#loadbar").removeClass("d-none");
+                data.submit();
+            },
+            done: function (e, data) {
+                var url = data.result.mediaURL;
+                $("#VideoURL").val(url)
+                $("video source").attr("src", url);
+                $("#videoFrame video").get(0).load();
+                $("#loadpic").addClass("d-none");
+                $("#videoFrame").removeClass("d-none");
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#loadbar .progress-bar').css('width', progress + '%').html(progress + '%');
+                if(progress == 100)
+                {
+                    $("#loadbar").addClass("d-none");
+                    $("#loadpic").removeClass("d-none");
+                }
+
+            }
+        });
+    });
+
+ </script>
+
+@Scripts.Render("~/bundles/jqueryval")
+
+        
+      
+   
+
+              
+
+
+
+
+
+

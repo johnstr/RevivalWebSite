@@ -1,0 +1,73 @@
+﻿@model RevivalWebSite.Models.Event
+@using System.Threading;
+
+<div class="card mb-4 @ViewBag.Hide">
+    @if (User.IsInRole("admin") && ViewContext.RouteData.Values["controller"].ToString() == "Admin")
+        {
+        <div class="card-header p-0">
+            @if (Model.StartTime.ToShortDateString().Equals(Model.EndTime.ToShortDateString()))
+            {
+                <span class="btn h7" style="cursor: default;">@Model.StartTime.ToString("MMM dd") </span>
+            }
+            else
+            {
+                <span class="btn h7" style="cursor: default;">@Model.StartTime.ToString("MMM dd") -  @Model.EndTime.ToString("MMM dd") </span>
+            }
+            <div class="float-right">
+                <div data-toggle="modal" data-target="#addMedia" class="btn btn-default" onclick="editOrCreateEvent(@Model.ID)"><i class="fa fa-edit"></i></div>
+                <div class="btn btn-default" data-toggle="modal" data-target="#deleteEvent" onclick="deleteEvent(@Model.ID)"><i class="fa fa-trash" aria-hidden="true"></i></div>
+            </div>
+        </div>
+    }
+    else 
+    {
+        <p class="card-header">
+            @if (Model.StartTime.ToShortDateString().Equals(Model.EndTime.ToShortDateString()))
+            {
+                <span class="h7">@Model.StartTime.ToString("MMM dd") </span>
+            }
+            else
+            {
+                <span class="h7">@Model.StartTime.ToString("MMM dd") - @Model.EndTime.ToString("MMM dd") </span>
+            }
+            <a href="#" class="float-right"><i class="fas fa-share-alt"></i></a>
+            <a href="#" class="float-right mr-4"><i class="fa fa-calendar-plus-o"></i></a>
+        </p>
+     } 
+    @if (Thread.CurrentThread.CurrentCulture.Name.Contains("uk"))
+    {
+      <div class="card-body">
+        <div class="row">
+            <div class="col-lg-5 image-block">
+                <div class="img rounded" style="background-image: url('@Model.PhotoURL')"></div>
+            </div>
+            <div class="col-lg-7">
+                <h5 class="card-title">@Model.Name</h5>
+                <p class="card-text">@Model.About</p>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        <p>Time: @Model.StartTime.ToShortTimeString() - @Model.EndTime.ToShortTimeString() </p>
+        Location: <a href="#">@Model.Location</a>
+    </div>
+    }
+    else
+    {
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-5 image-block">
+                    <div class="img rounded" style="background-image: url('@Model.PhotoURL')"></div>
+                </div>
+                <div class="col-lg-7">
+                    <h5 class="card-title">@Model.Name_ENG</h5>
+                    <p class="card-text">@Model.About_ENG</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            <p>Time: @Model.StartTime.ToShortTimeString() - @Model.EndTime.ToShortTimeString() </p>
+            Location: <a href="#">@Model.Location_ENG</a>
+        </div>
+    }
+</div>

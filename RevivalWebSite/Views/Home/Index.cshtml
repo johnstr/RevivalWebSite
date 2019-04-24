@@ -1,0 +1,249 @@
+﻿@using RevivalWebSite.LangResources;
+@using System.Threading;
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@section Masthead{
+
+    <section class="masthead" style="background-image: url('../../Resources/Img/church.jpg')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="container text text-white text-center">
+                    <h1>Welcome to Revival Baptist Church</h1>
+                    <h4>Expanding God's Kingdom in the Village</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+
+
+<section class="container mt-5">
+    <div class="row d-flex flex-column align-items-center">
+        <p class="h4">About us</p>
+        <p class="lead text-center w-lg-50 w-75 mt-3">Here at Hill City, our message and mission is simply, to help connect people to the life giving message of Jesus.</p>
+    </div>
+    <div class="row text-center justify-content-center mt-3">
+        <div class="col-lg-3 my-lg-5 my-2">
+            <a href="#" class="h6">Who we are?</a>
+        </div>
+        <div class="col-lg-3 my-lg-5 my-2">
+            <a href="#" class="h6">What we believe?</a>
+        </div>
+        <div class="col-lg-3 my-lg-5 my-2">
+            <a href="#" class="h6">How we started?</a>
+        </div>
+    </div>
+</section>
+
+
+<section id="services" class="container mt-4">
+    <div class="row merge-close">
+        <div class="col-lg-4">
+            <div class="image-block">
+                <div class="img card-img-top" style="background-image: url('../../Resources/Img/famday.jpg')"></div>
+                <div class="overlay dark"></div>
+                <p class="h4 text-white text">Church Service</p>
+                <p class="h5 text-white lead hidden">Sunday, 10 AM</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="image-block">
+                <div class="img card-img-top" style="background-image: url('../../Resources/Img/moldmeet.jpg')"></div>
+                <div class="overlay dark"></div>
+                <p class="h4 text-white text">Youth Meeting</p>
+                <p class="h5 text-white lead hidden">Friday, 7 PM</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="image-block">
+                <div class="img card-img-top" style="background-image: url('../../Resources/Img/snowchurch.jpg')"></div>
+                <div class="overlay dark"></div>
+
+                <p class="h4 text-white text">@HomeTexts.Location</p>
+                <div class="hidden">
+                    <p class="text-white">Holovyne, <br> Zhytomyr Oblast, <br> Ukraine</p>
+                    <div class="text-center mt-2">
+                        <a class="h8 btn btn-success" href="https://www.google.com.br/maps/dir//50.478136,28.859185/@("@")50.4778609,28.8577367,286m/data=!3m1!1e3!4m2!4m1!3e0">Get Directions</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@* Upcoming Events *@
+@if (ViewBag.Events != null && ViewBag.Events.Count > 2)
+{
+    <hr>
+    <section id="events" class="container">
+        <div class="row merge-vclose">
+            @foreach (var evnt in ViewBag.Events)
+            {
+                <div class="col-lg-3 col-sm-6">
+                    <div class="card h-100">
+                        @if (evnt.StartTime.ToShortDateString().Equals(evnt.EndTime.ToShortDateString()))
+                        {
+                            <p class="h7 card-header">@evnt.StartTime.ToString("MMM dd") </p>
+                        }
+                        else
+                        {
+                            <p class="h7 card-header">@evnt.StartTime.ToString("MMM dd") - @evnt.EndTime.ToString("MMM dd") </p>
+                        }
+                        <div class="img" style="background-image: url('@evnt.PhotoURL')"></div> 
+                        @if (Thread.CurrentThread.CurrentCulture.Name.Contains("uk"))
+                        {
+                        <div class="card-body">
+                            <span class="card-title h6">
+                                <a href="Events">@evnt.Name</a>
+                            </span>
+                            <p class="card-text">@(evnt.About.Substring(0, Math.Min(evnt.About.Length, 100)) + "...")</p>
+                        </div>
+                        }
+                        else
+                        {
+                            <div class="card-body">
+                                <span class="card-title h6">
+                                    <a href="Events">@evnt.Name_ENG</a>
+                                </span>
+                                <p class="card-text">@(evnt.About_ENG.Substring(0, Math.Min(evnt.About_ENG.Length, 100)) + "...")</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        <div class="col-lg-3 col-sm-6 d-flex align-items-center">
+            <div class="p-2 container text-center">
+                <h4>@HomeTexts.UpcomingEvents</h4>
+                <h6 class="mt-5"><a href="Events">@HomeTexts.SeeMore</a></h6>
+            </div>
+        </div>
+    </div>
+
+</section>
+}
+
+<hr>
+
+        @* Ministries *@
+        <section id="ministry" class="container d-flex flex-row flex-wrap">
+
+            <div class="p-2 container-fluid d-flex align-items-center justify-content-center">
+                <div class="text-center">
+                    <h4>@HomeTexts.MinistriesAndProjects</h4>
+                    <h6 class="mt-5"><a href="#">@HomeTexts.SeeMore</a></h6>
+                </div>
+            </div>
+
+
+            <a href="#" class="p-2">
+                <div class="image-block">
+                    <div class="img" style="background-image: url('../../Resources/Img/moldmeet.JPG')"></div>
+                    <div class="overlay dark"></div>
+                    <div class="container-fluid text text-center">
+                        <span class="h5">Camps</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="p-2">
+                <div class="image-block">
+                    <div class="img" style="background-image: url('img/snowchurch.jpg')"></div>
+                    <div class="overlay dark"></div>
+                    <div class="container-fluid text text-center">
+                        <span class="h5">Warriors for the good</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="p-2">
+                <div class="image-block">
+                    <div class="img" style="background-image: url('../../Resources/Img/snowchurch.jpg')"></div>
+                    <div class="overlay dark"></div>
+                    <div class="container-fluid text text-center">
+                        <span class="h5">Camps</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="#" class="p-2">
+                <div class="image-block">
+                    <div class="img" style="background-image: url('../../Resources/Img/snowchurch.jpg')"></div>
+                    <div class="overlay dark"></div>
+                    <div class="container-fluid text text-center">
+                        <span class="h5">Camps</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="p-2">
+                <div class="image-block">
+                    <div class="img" style="background-image: url('../../Resources/Img/moldmeet.JPG')"></div>
+                    <div class="overlay dark"></div>
+                    <div class="container-fluid text text-center">
+                        <span class="h5">Warriors for the good</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="p-2">
+                <div class="image-block">
+                    <div class="img" style="background-image: url('../../Resources/Img/snowchurch.jpg')"></div>
+                    <div class="overlay dark"></div>
+                    <div class="container-fluid text text-center">
+                        <span class="h5">Camps</span>
+                    </div>
+                </div>
+            </a>
+
+
+            <a href="#" class="p-2">
+                <div class="image-block">
+                    <div class="img" style="background-image: url('../../Resources/Img/moldmeet.JPG')"></div>
+                    <div class="overlay dark"></div>
+                    <div class="container-fluid text text-center">
+                        <span class="h5">Camps</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="p-2">
+                <div class="image-block">
+                    <div class="img" style="background-image: url('../../Resources/Img/moldmeet.JPG')"></div>
+                    <div class="overlay dark"></div>
+                    <div class="container-fluid text text-center">
+                        <span class="h5">Warriors for the good</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="p-2">
+                <div class="image-block">
+                    <div class="img" style="background-image: url('../../Resources/Img/snowchurch.jpg')"></div>
+                    <div class="overlay dark"></div>
+                    <div class="container-fluid text text-center">
+                        <span class="h5">Camps</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="p-2">
+                <div class="image-block">
+                    <div class="img" style="background-image: url('../../Resources/Img/church.jpg')"></div>
+                    <div class="overlay dark"></div>
+                    <div class="container-fluid text text-center">
+                        <span class="h5">Warriors for the good</span>
+                    </div>
+                </div>
+            </a>
+        </section>
+
+
+

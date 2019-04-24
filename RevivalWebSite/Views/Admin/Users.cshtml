@@ -1,0 +1,164 @@
+﻿@using RevivalWebSite.ViewModels
+@model List<UserViewModel>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+
+<div class="row mt-nav">
+    <nav class="navbar navbar-light bg-light  justify-content-between w-100 mb-3">
+        @using (Ajax.BeginForm("SearchEvent", null, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "eventList", InsertionMode = InsertionMode.Replace, LoadingElementId = "loader" }, new { @class = "form-inline" }))
+        {
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        }
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <button data-toggle="modal" data-target="#registerModal" class="btn btn-outline-primary ml-2" onclick="registerUser()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div id="userList">
+    @{ Html.RenderPartial("UserList", Model); }
+</div>
+
+
+<!-- Modal Delete-->
+<div class="modal fade" id="deleteUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="confirmDelBut" type="button" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loader" class="modal-backdrop fade show d-none">
+    <img src="/Resources/Img/loader.gif" width="100" height="100" alt="Loading..." style="position: absolute;top: 50%;left: 45%;">
+</div>
+
+
+
+
+
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).on('hide.bs.modal', '#registerModal', function () {
+            $('#dialogPlaceholder').html("");
+        });
+
+        $(document).on('hide.bs.modal', '#editModal', function () {
+            $('#dialogPlaceholder').html("");
+        });
+
+        $(document).on('hide.bs.modal', '#deleteUser', function () {
+            $("#confirmDelBut").unbind("click");
+        });
+        
+        function regSuccess(result) {
+            $('#registerModal').modal('hide');
+            if (result.redirectTo) {
+                refreshUserList(result.redirectTo);
+            } else {
+                $("#dialogPlaceholder").html(result);
+                $('#registerModal').modal('show');
+                rewireValidation();
+            }
+        }
+
+        function editSuccess(result) {
+            $('#editModal').modal('hide');
+            if (result.redirectTo) {
+                location.replace(result.redirectTo);
+            }
+            else {
+                $("#dialogPlaceholder").html(result);
+                $('#editModal').modal('show');
+                rewireValidation();
+            }
+        }
+
+        function refreshUserList(url) {
+            $('#loader').removeClass("d-none");
+            $.ajax({
+                type: "GET",
+                url: url,
+                contentType: 'application/html',
+                success: function (content) {
+                    $('#loader').addClass("d-none");
+                    $('#userList').html(content);
+                },
+                error: function (e) { }
+            });
+        }
+        
+        function registerUser() {
+            $('#loader').removeClass("d-none");
+            $.ajax({
+                type: "GET",
+                url: '/Account/Register',
+                contentType: 'application/html',
+                success: function (content) {
+                    $('#loader').addClass("d-none");
+                    $('#dialogPlaceholder').html(content);
+                    $('#registerModal').modal('show');
+                },
+                error: function (e) { }
+            });
+        }
+
+        function editUser(user_id) {
+            $('#loader').removeClass("d-none");
+            $.ajax({
+                type: "GET",
+                url: 'EditUser',
+                data: { id: user_id },
+                contentType: 'application/html',
+                success: function (content) {
+                    $('#loader').addClass("d-none");
+                    $('#dialogPlaceholder').html(content);
+                    $('#editModal').modal('show');
+                },
+                error: function (e) { }
+            });
+        }
+
+        function deleteUser(user_id) {
+            $("#confirmDelBut").click(function () {
+                $('#loader').removeClass("d-none");
+                $.ajax({
+                    type: "GET",
+                    url: 'DeleteUser',
+                    data: { id: user_id },
+                    contentType: 'application/html',
+                    success: function (content) {
+                        $('#loader').addClass("d-none");
+                        $("#userList").html(content);
+                        $('#deleteUser').modal('hide');
+                    },
+                    error: function (e) { }
+                })
+            });
+        }
+    </script>
+    }

@@ -1,0 +1,155 @@
+﻿@using RevivalWebSite.Models
+@model List<Media> 
+
+@{
+    ViewBag.Title = "Media";
+}
+
+
+<div class="row mt-nav">
+    <nav class="navbar navbar-light bg-light  justify-content-between w-100 mb-3">
+      @*<div>
+          <button data-toggle="modal" data-target="#mediaModal" class="btn btn-primary" onclick="editOrCreateMedia()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+            <div class="dropdown d-inline-block">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown button
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
+        </div>*@
+        @using (Ajax.BeginForm("SearchMedia", null, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "mediaList", InsertionMode = InsertionMode.Replace, LoadingElementId = "loadery" }, new { @class = "form-inline" }))
+        {
+          <div class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        }
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <button data-toggle="modal" data-target="#categoriesModal" class="btn btn-outline-primary" onclick="mediaCategories()">Category</button>
+            </li>
+            <li class="nav-item">
+                <button data-toggle="modal" data-target="#mediaModal" class="btn btn-outline-primary ml-2" onclick="editOrCreateMedia()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+            </li>
+        </ul>
+    </nav>    
+</div>
+
+
+
+<div id="mediaList">
+    @{ Html.RenderPartial("MediaList", Model); }
+</div>
+               
+
+<!-- Modal Delete-->
+<div class="modal fade" id="deleteMedia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="confirmDelBut" type="button" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loader" class="modal-backdrop fade show d-none">
+    <img src="/Resources/Img/loader.gif" width="100" height="100" alt="Loading..." style="position: absolute;top: 50%;left: 45%;">
+</div>
+
+
+@section scripts{
+<script type="text/javascript">
+    $(document).on('hide.bs.modal', '#mediaModal', function () {
+        $('#dialogPlaceholder').html("");
+    });
+
+    $(document).on('hide.bs.modal', '#categoriesModal', function () {
+        $('#dialogPlaceholder').html("");
+    });
+
+    $(document).on('hide.bs.modal', '#deleteMedia', function () {
+        $("#confirmDelBut").unbind("click");
+    });
+
+    //called by MediaCategories when klicked on SaveChanges
+    function refreshMediaList() {
+        $('#loader').removeClass("d-none");
+        $.ajax({
+            type: "GET",
+            url: "MediaList",
+            success: function (content) {
+                $('#loader').addClass("d-none");
+                $("#mediaList").html(content);
+            },
+            error: function (e) { }
+        });
+    }
+
+    function mediaCategories() {
+        $('#loader').removeClass("d-none");
+        $.ajax({
+            type: "GET",
+            url: "MediaCategories",
+            contentType: 'application/html',
+            success: function (content) {
+                $('#loader').addClass("d-none");
+                $('#dialogPlaceholder').html(content);
+                $('#categoriesModal').modal('show');
+            },
+            error: function (e) { }
+        });
+    }
+
+
+    function editOrCreateMedia(media_id) {
+        $('#loader').removeClass("d-none");
+        $.ajax({
+                type: "GET",
+                url: 'CreateOrEditMedia',
+                data: {id: media_id },
+                contentType: 'application/html',
+                success: function (content) {
+                    $('#loader').addClass("d-none");
+                    $('#dialogPlaceholder').html(content);
+                    $('#mediaModal').modal('show');
+                },
+                error: function (e) { }
+            });
+    }
+
+    function deleteMedia(media_id) {
+        $("#confirmDelBut").click(function () {
+            $('#loader').removeClass("d-none");
+            $.ajax({
+                type: "GET",
+                url: 'DeleteMedia',
+                data: { id: media_id },
+                contentType: 'application/html',
+                success: function (content) {
+                    $('#loader').addClass("d-none");
+                    $("#mediaList").html(content);
+                    $('#deleteMedia').modal('hide');
+                },
+                error: function (e) { }
+            })
+        });
+    }
+   </script>
+}

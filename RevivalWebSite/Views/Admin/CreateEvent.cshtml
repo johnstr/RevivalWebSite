@@ -1,0 +1,110 @@
+﻿@model RevivalWebSite.ViewModels.AddEditEventViewModel
+@{
+    ViewBag.Name = "New Event";
+}
+
+@using (Html.BeginForm("CreateEvent", "Admin", null, FormMethod.Post, new { @class = "form-horizontal", role = "form col", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>@ViewBag.Name</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name_ENG, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Name_ENG, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name_ENG, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.About, new { @class = "control-label" })
+        @Html.TextAreaFor(m => m.About, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.About, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.About_ENG, new { @class = "control-label" })
+        @Html.TextAreaFor(m => m.About_ENG, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.About_ENG, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Location, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Location, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Location_ENG, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Location_ENG, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Location_ENG, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group row merge-full">
+        <div class="col-md-6">
+            @Html.LabelFor(m => m.StartTime, new { @class = "control-label" })
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.StartTime, new { @class = "form-control", type = "datetime-local" })
+                <span class="input-group-addon btn">
+                    <span class="fa fa-calendar"></span>
+                </span>
+            </div>
+            <p>@Html.ValidationMessageFor(m => m.StartTime, "", new { @class = "text-danger" })</p>
+     </div>  
+        <div class="col-md-6">
+            @Html.LabelFor(m => m.EndTime, new { @class = "control-label" })
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.EndTime, new { @class = "form-control", type = "datetime-local" })
+                <span class="input-group-addon btn">
+                    <span class="fa fa-calendar"></span>
+                </span>
+            </div>
+            <p>@Html.ValidationMessageFor(m => m.EndTime, "", new { @class = "text-danger" })</p>
+        </div>
+    </div>
+        <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        @Html.TextBoxFor(m => m.ImageUpload, new { @class = "form-control", type = "file" })
+                        @Html.LabelFor(m => m.ImageUpload, new { @class = "btn btn-primary" })
+                    </div>
+                        @Html.TextBoxFor(m => m.PhotoURL, new { @class = "form-control", @readonly = "true", type= "text" })
+                </div>
+                 <p>@Html.ValidationMessageFor(m => m.ImageUpload, "", new { @class = "text-danger" })</p>
+            </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-default" value="Create Event" />
+    </div>
+}
+
+
+
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script>
+            $(function () {
+                $(document).on('change', ':file', function () {
+                    var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1, label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                    input.trigger('fileselect', [
+                        numFiles,
+                        label
+                    ]);
+                });
+       
+                
+                $(document).ready(function () {
+                    $(':file').on('fileselect', function (event, numFiles, label) {
+                        var input = $(this).parents('.input-group').find(':text'), log = numFiles > 1 ? numFiles + ' files selected' : label;
+                        if (input.length) {
+                            input.val(log);
+                        } else {
+                            if (log)
+                                alert(log);
+                        }
+                    });
+                });
+            });
+        </script>
+    }
+
+

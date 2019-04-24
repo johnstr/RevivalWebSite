@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="John Strelchenko">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+
+@RenderBody()
+
+
+<!-- Ajax Create Modal Uploaded Here -->
+<div id="dialogPlaceholder"></div>
+
+<div id="loader" class="modal-backdrop fade show d-none">
+    <img src="/Resources/Img/loader.gif" width="100" height="100" alt="Loading..." style="position: absolute;top: 50%;left: 45%;">
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
+
+<script type="text/javascript">
+    $(".dropdown-toggle").dropdown();
+    // Add slideDown animation to Bootstrap dropdown when expanding.
+    $('.dropdown').on('show.bs.dropdown', function () {
+        $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+    });
+
+    var heightSlider = $('.navbar').height();
+    $('.mt-nav').css({ marginTop: heightSlider + 30 + 'px' });
+
+    // Add slideUp animation to Bootstrap dropdown when collapsing.
+    $('.dropdown').on('hide.bs.dropdown', function () {
+        $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+    });
+   
+    $(document).scroll(function() {
+        let $nav = $("#mainNav");
+        if ($nav.hasClass("home-page")) {
+            $nav.toggleClass('not-scrolled', $(this).scrollTop() < $nav.height());
+        }
+    });
+</script>
+    
+  
+</body>
+</html>

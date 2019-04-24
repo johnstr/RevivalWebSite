@@ -1,0 +1,85 @@
+﻿@model RevivalWebSite.ViewModels.MediaViewModel
+@{
+    ViewBag.Name = "Edit Media";
+}
+
+@using (Html.BeginForm("EditMedia", "Admin", null, FormMethod.Post, new { @class = "form-horizontal", role = "form col", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>@ViewBag.Name</h4>
+    <hr />
+    for (var i = 0; i < Model.Categories.Count; i++)
+    {
+        @Html.HiddenFor(m => Model.Categories[i].Id)
+        @Html.HiddenFor(m => Model.Categories[i].Name)
+    }
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, new { @class = "control-label" })
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label" })
+        @Html.DropDownListFor(model => model.CategoryID, new SelectList(Model.Categories, "Id", "Name"), "Select Category", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CategoryID, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.VideoURL, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.VideoURL, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.VideoURL, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-btn">
+                @Html.TextBoxFor(m => m.VideoUpload, new { @class = "form-control", type = "file" })
+                @Html.LabelFor(m => m.VideoUpload, new { @class = "btn btn-primary" })
+            </div>
+            @Html.TextBoxFor(m => m.VideoUpload.FileName, new { @class = "form-control", @readonly = "true", type = "text" })
+        </div>
+        <p>@Html.ValidationMessageFor(m => m.VideoUpload, "", new { @class = "text-danger" })</p>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-default" value="Edit" />
+    </div>
+}
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+            $(function () {
+                $(document).on('change', ':file', function () {
+                    var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1, label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                    input.trigger('fileselect', [
+                        numFiles,
+                        label
+                    ]);
+                });
+
+
+                $(document).ready(function () {
+                    $(':file').on('fileselect', function (event, numFiles, label) {
+                        var input = $(this).parents('.input-group').find(':text'), log = numFiles > 1 ? numFiles + ' files selected' : label;
+                        if (input.length) {
+                            input.val(log);
+                        } else {
+                            if (log)
+                                alert(log);
+                        }
+                    });
+                });
+            });
+    </script>
+}
+
+
+
+

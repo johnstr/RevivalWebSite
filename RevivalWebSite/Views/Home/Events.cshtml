@@ -1,0 +1,83 @@
+﻿@using RevivalWebSite.Models
+@model List<Event>
+@{
+
+}
+
+@section Masthead{
+<section class="masthead smaller" style="background-image: url('../../Resources/Img/contact-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="container text text-white text-center">
+                <h3>@ViewBag.Title</h3>
+                <p class="lead">Here at Hill City, our message and mission is simply, to help connect people to the life giving message of Jesus.</p>
+            </div>
+        </div>
+    </div>
+</section>
+ }
+
+<section class="container mt-4">
+    <div class="row merge-close">
+        <div class="sidebar col-lg-3">
+            <div class="container text-center">
+                <nav class="navbar navbar-light bg-light">
+                    @using (Html.BeginForm("SearchEvents", "Home", FormMethod.Get, new { @class = "form-inline w-lg-100" }))
+                    {
+                        <div class="input-group w-lg-100">
+                            <input type="text" name="search" class="form-control" placeholder="Search Event">
+                            <div class="input-group-append">
+                                <button class="btn btn-success" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    }
+                    <div class="dropdown mt-lg-2">
+                        <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         Choose Month
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="display: none;">
+                            @Html.ActionLink("January", "EventsByMonth", new { month = 1 }, new { @class= "dropdown-item"})
+                            @Html.ActionLink("February", "EventsByMonth", new { month = 2 }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("March", "EventsByMonth", new { month = 3 }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("April", "EventsByMonth", new { month = 4 }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("May", "EventsByMonth", new { month = 5 }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("June", "EventsByMonth", new { month = 6 }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("July", "EventsByMonth", new { month = 7 }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("August", "EventsByMonth", new { month = 8 }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("September", "EventsByMonth", new { month = 9 }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("October", "EventsByMonth", new { month = 10 }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("November", "EventsByMonth", new { month = 11 }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("December", "EventsByMonth", new { month = 12 }, new { @class = "dropdown-item" })
+                        </div>
+                        </div>
+                </nav> 
+             </div>
+        </div>
+
+        <div id="eventList" class="col-lg-9 mt-3">
+            @{ Html.RenderPartial("EventList", Model); }
+        </div>
+
+
+    </div>
+</section>
+
+@section scripts{
+<script type="text/javascript">
+
+    $("#seeMore").on("click", function () {
+        var card;
+        for (var i = 0; i < 3; i++) {
+            card = $("#eventList").find(".card.d-none:first");
+            console.log(card)
+            card.removeClass("d-none");
+            if(card.length == 0){
+                $(this).parent().removeClass("d-flex").addClass("d-none");
+                return;
+            }
+        }
+    });
+
+</script>
+}

@@ -1,0 +1,228 @@
+﻿@using RevivalWebSite.LangResources;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<header class="bg-primary">
+
+@{var scroll = ""; }
+@if (ViewContext.RouteData.Values["controller"].ToString() == "Home" && ViewContext.RouteData.Values["action"].ToString() == "Index")
+{
+    scroll = "home-page not-scrolled";
+}
+
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark fixed-top @scroll" id="mainNav">
+    <div class="container navbar-inner">
+        @Html.ActionLink("Revival BC", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    @*<li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="newabout.html" data-toggle="dropdown" data-hover="dropdown" aria-haspopup="true" aria-expanded="false">
+                            About
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
+                            @Html.ActionLink("Events", "Events#leadership", "Home", null, new { @class = "nav-link" })
+                            <a class="dropdown-item" href="about.html#leadership">Leadership</a>
+                            <a class="dropdown-item" href="about.html#beliefs">Beliefs</a>
+                            <a class="dropdown-item" href="about.html#history">History</a>
+                        </div>
+                    </li>*@
+                    <li class="nav-item">
+                        @Html.ActionLink(HomeTexts.About, "About", "Home", null, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink(HomeTexts.Events, "Events", "Home", null, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink(HomeTexts.MinistriesAndProjects, "Ministries", "Home", null, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink(HomeTexts.Media, "Media", "Home", null, new { @class="nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link give-but" href="services.html">Give now</a>
+                    </li>
+                </ul>
+            </div>
+    </div>
+</nav>
+
+    <!-- Local Anchors -->
+    @RenderSection("anchors", required: false)
+
+    <!-- Page Header Photo -->
+    @RenderSection("masthead", required: false)
+
+</header>
+
+
+<div class="body-content">
+    @RenderBody()
+</div>
+
+<hr />
+
+<!-- Footer -->
+<footer class="page-footer font-small blue-grey lighten-5">
+    <div class="social container-fluid">
+        <div class="row py-4 d-flex align-items-center">
+            <!-- Grid column -->
+            <div class="col-md-6 col-lg-5 text-center text-md-left mb-4 mb-md-0">
+                @Html.ActionLink("ukr", "ChangeLanguage", "Home", new { lang = "uk", returnUri = Request.Url.AbsoluteUri }, new { @class= "h8", style="color: black" })
+                /
+                @Html.ActionLink("eng", "ChangeLanguage", "Home", new { lang = "en", returnUri = Request.Url.AbsoluteUri }, new { @class = "h8", style = "color: black" })
+            </div>
+            <!-- Grid column -->
+            <div class="col-md-6 col-lg-7 text-center text-md-right">
+                <p class="get-connected">Get connected with us on social media!</p>
+                <!-- Facebook -->
+                <a class="fa fa-facebook"></a>
+                <!-- Twitter -->
+                <a class="fa fa-twitter"></a>
+                <!-- Instagram +-->
+                <a class="fa fa-instagram"></a>
+            </div>
+            <!-- Grid column -->
+        </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="container text-center text-md-left mt-5">
+        <!-- Grid row -->
+        <div class="row mt-3">
+            <!-- Grid column -->
+            <div class="col-md-3 col-lg-3 col-xl-3 mb-4 d-flex align-items-center">
+                <!-- Content -->
+
+                <hr>
+                <p class="h7 text-center" style="line-height: 200%;">God change me and the world around me will be changed!!<p>
+                    <hr>
+            </div>
+            <!-- Grid column -->
+            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+                <!-- Links -->
+                <p class="h7 text-uppercase font-weight-bold">Ministries</p>
+                <hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto">
+                <p>
+                    <a class="dark-grey-text h8" href="#!">Warriors for the Good</a>
+                </p>
+                <p>
+                    <a class="dark-grey-text h8" href="#!">Youth & Kids</a>
+                </p>
+                <p>
+                    <a class="dark-grey-text h8" href="#!">Camps</a>
+                </p>
+                <p>
+                    <a class="dark-grey-text h8" href="#!">Family Festivals</a>
+                </p>
+                <p>
+                    <a class="dark-grey-text h8" href="#!">Seed Project</a>
+                </p>
+                <p>
+                    <a class="dark-grey-text h8" href="#!">Joy Boxes</a>
+                </p>
+            </div>
+            <!-- Grid column -->
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                <!-- Links -->
+                <p class="h7 text-uppercase font-weight-bold">Useful links</p>
+                <hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto">
+                <p>
+                    <a class="dark-grey-text h8" href="#!">Beliefs</a>
+                </p>
+                <p>
+                    <a class="dark-grey-text h8" href="#!">Leadership</a>
+                </p>
+                <p>
+                    <a class="dark-grey-text h8" href="#!">History</a>
+                </p>
+                <p>
+                    <a class="dark-grey-text h8" href="https://www.google.com.br/maps/dir//50.478136,28.859185/@("@")50.4778609,28.8577367,286m/data=!3m1!1e3!4m2!4m1!3e0">Location</a>
+                </p>
+                <p>
+                    <a class="dark-grey-text h8" href="#!">Give Now</a>
+                </p>
+                <p>
+                    <a class="dark-grey-text h8" href="#!" onclick="Login()">Login</a>
+                </p>
+            </div>
+            <!-- Grid column -->
+            <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-md-0 mb-4">
+                <!-- Links -->
+                <p class="h7 text-uppercase font-weight-bold">Contact</p>
+                <hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto">
+                <p>
+                    <i class="fas fa-church mr-3"></i>4 Polyova Street, Holovyne, Zhytomyr Oblast, Ukraine, 12325
+                </p>
+                <p>
+                    <i class="fa fa-envelope mr-3"></i>info@example.com
+                </p>
+                <p>
+                    <i class="fa fa-phone mr-3"></i> + 01 234 567 88
+                </p>
+                <p>
+                    <i class="fa fa-print mr-3"></i> + 01 234 567 89
+                </p>
+
+            </div>
+            <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+    </div>
+
+    <div class="footer-copyright text-center text-black-50 py-3">
+        © 2018 Copyright: Revival Church
+    </div>
+
+</footer>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).on('hide.bs.modal', '#loginModal', function () {
+            $('#dialogPlaceholder').html("");
+        });
+
+        function Login() {
+            $('#loader').removeClass("d-none");
+            $.ajax({
+                type: "GET",
+                url: '/Account/Login',
+                contentType: 'application/html',
+                success: function (content) {
+                    $('#loader').addClass("d-none");
+                    $('#dialogPlaceholder').html(content);
+                    $('#loginModal').modal('show');
+                },
+                error: function (e) { }
+            });
+        }
+
+        function loginSuccess(result) {
+            $('#loginModal').modal('hide');
+            if (result.redirectTo) {
+                window.location.href = result.redirectTo;
+            } else {
+                $("#dialogPlaceholder").html(result);
+                $('#loginModal').modal('show');
+                rewireValidation();
+            }
+        }
+
+
+        function rewireValidation() {
+            $('form').removeData('validator');
+            $('form').removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse('form');
+        }
+
+    </script>
+
+    @RenderSection("scripts", required: false)
+}   

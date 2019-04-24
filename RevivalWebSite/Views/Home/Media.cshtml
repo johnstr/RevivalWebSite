@@ -1,0 +1,112 @@
+﻿@using RevivalWebSite.Models;
+@using System.Threading;
+@model List<Media>
+
+@section Masthead{
+<section class="masthead smaller" style="background-image: url('../../Resources/Img/about-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="container text text-white text-center">
+                <h3>@ViewBag.Title</h3>
+                <p class="lead">Here at Hill City, our message and mission is simply, to help connect people to the life giving message of Jesus.</p>
+            </div>
+        </div>
+    </div>
+</section>  
+    }
+
+<section class="container">
+    <div class="row merge-close mt-3">
+        <div class="col-lg-3">
+            <nav class="navbar navbar-light bg-light">
+            @using (Html.BeginForm("SearchMedia", "Home", FormMethod.Get, new { @class = "w-100" }))
+            {
+                <div class="input-group">
+                    <input name="search" type="text" class="form-control" placeholder="Search media">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                }
+
+                <ul class="nav flex-column mt-3">
+                    <li class="nav-item">
+                        @Html.ActionLink("All Media", "Media", "Home", null, new { @class = "h8 nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Recent", "MediaRecent", "Home", null, new { @class = "h8 nav-link" })
+                    </li>
+                    @if (ViewBag.Categories != null)
+                    {
+                    <li class="nav-item">
+                        <a class="h8 nav-link text-secondary">By Categories</a>
+                  
+                        <ul class="nav flex-column ml-4">
+                         @foreach (MediaCategory ctgory in ViewBag.Categories)
+                         {
+                            <li class="nav-item">
+                            @if (Thread.CurrentThread.CurrentCulture.Name.Contains("uk"))
+                            {
+                               @Html.ActionLink(ctgory.Name, "MediaByCategory", "Home", new { id = ctgory.ID }, new { @class = "h8 nav-link" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink(ctgory.Name_ENG, "MediaByCategory", "Home", new { id = ctgory.ID }, new { @class = "h8 nav-link" })
+                            }
+                            </li>
+                         }
+                        </ul>
+                    </li>
+                    }
+                </ul>
+                <!--<form class="form-inline">-->
+                <!--<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+                <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+                <!--</form>-->
+
+            </nav>
+        </div>
+
+        <div id="mediaList" class="col-lg-9">
+             @{ Html.RenderPartial("MediaList", Model); }
+        </div>
+  </div>
+        
+</section>
+
+@section scripts{
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    $(window).resize(function () {
+    //            location.reload();
+    //    });
+    //});
+
+
+    $("#seeMore").on("click", function () {
+        var cols = $("#mediaList  [class*='col']");
+
+        var firstRow = cols.find(".d-none:first");
+        firstRow.removeClass("d-none");
+        var secondRow = cols.find(".d-none:first");
+        secondRow.removeClass("d-none");
+      
+        if (cols.length == 1) {
+            var thirdRow = cols.find(".d-none:first");
+            thirdRow.removeClass("d-none");
+           
+            if (thirdRow.length == 0) {
+                $(this).parent().removeClass("d-flex").addClass("d-none");
+            }
+        } else if (secondRow.length < 3) {
+            $(this).parent().removeClass("d-flex").addClass("d-none");
+        }
+     
+    });
+
+</script>
+    }
+

@@ -1,0 +1,27 @@
+﻿@using RevivalWebSite.Models;
+@model List<MediaCategory>
+
+@{
+    ViewBag.Name = "Media Categories";
+    Layout = null;
+}
+
+<div class="modal fade" id="categoriesModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@ViewBag.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div id="categoryList" class="modal-body">
+                    @{ Html.RenderPartial("MediaCategoryList", Model); }
+                </div>
+            <div class="modal-footer">
+                <button onclick="refreshMediaList()" type="button" class="btn btn-primary" data-dismiss="modal">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+

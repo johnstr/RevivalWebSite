@@ -1,0 +1,55 @@
+﻿@using RevivalWebSite.ViewModels
+@model LoginViewModel
+@{
+    ViewBag.Name = "Log in";
+    Layout = null;
+}
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@ViewBag.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("Login", "Account", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "loginSuccess" }, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.UserName, new { @class = "h8 control-label" })
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "h8 control-label" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group mb-0">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group mb-0">
+                        <input type="submit" value="Log in" class="btn btn-default h8" />
+                    </div>
+                </div>
+                    @* Enable this once you have account confirmation enabled for password reset functionality
+                        <p>
+                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                        </p>*@
+                }
+
+          </div>
+    </div>
+</div>
+
+
+@Scripts.Render("~/bundles/jqueryval")

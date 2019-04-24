@@ -1,0 +1,15 @@
+.carousel-item img {
+  width: 100%;
+  object-fit: cover; }
+
+#carousel-project .carousel-item img {
+  height: 400px; }
+
+@media only screen and (max-width: 600px) {
+  #carousel-project .carousel-item img {
+    height: 350px; } }
+@media only screen and (min-width: 992px) {
+  #carousel-project .carousel-item img {
+    height: 500px; } }
+
+/*# sourceMappingURL=custom-carousel.css.map */

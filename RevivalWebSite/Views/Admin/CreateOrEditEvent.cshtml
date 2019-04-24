@@ -1,0 +1,247 @@
+﻿@model RevivalWebSite.ViewModels.EventViewModel
+@{
+    ViewBag.Name = "New Event";
+}
+
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@ViewBag.Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            @using (Ajax.BeginForm("CreateOrEditEvent", "Admin", null, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "eventList", OnSuccess = "AjaxSuccess", OnBegin = "AjaxValidate" }, new { @class = "form-horizontal", role = "form col", enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => Model.Id)
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Name, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Name_ENG, new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.Name_ENG, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name_ENG, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.About, new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.About, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.About, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.About_ENG, new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.About_ENG, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.About_ENG, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Location, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.Location, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Location_ENG, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.Location_ENG, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Location_ENG, "", new { @class = "text-danger" })
+                    </div>
+                    @if (Model.Id == 0)
+                    {
+                    <div class="form-group row merge-full">
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.StartTime, new { @class = "control-label" })
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.StartTime, new { @class = "form-control", type = "datetime-local" })
+                                <span class="input-group-addon btn">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                            <p>@Html.ValidationMessageFor(m => m.StartTime, "", new { @class = "text-danger" })</p>
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.EndTime, new { @class = "control-label" })
+                            <div class="input-group">
+                                @Html.TextBoxFor(m => m.EndTime, new { @class = "form-control", type = "datetime-local" })
+                                <span class="input-group-addon btn">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                            <p>@Html.ValidationMessageFor(m => m.EndTime, "", new { @class = "text-danger" })</p>
+                        </div>
+                    </div>
+                    }
+                    else
+                    {
+                        <div class="form-group row merge-full">
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.StartTime, new { @class = "control-label" })
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.StartTime, new { @Value = @Model.StartTime.ToString("yyyy-MM-ddTHH:mm"), @class = "form-control", type = "datetime-local" })
+                                    <span class="input-group-addon btn">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                                <p>@Html.ValidationMessageFor(m => m.StartTime, "", new { @class = "text-danger" })</p>
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(m => m.EndTime, new { @class = "control-label" })
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.EndTime, new { @Value = @Model.EndTime.ToString("yyyy-MM-ddTHH:mm"), @class = "form-control", type = "datetime-local" })
+                                    <span class="input-group-addon btn">
+                                        <span class="fa fa-calendar"></span>
+                                    </span>
+                                </div>
+                                <p>@Html.ValidationMessageFor(m => m.EndTime, "", new { @class = "text-danger" })</p>
+                            </div>
+                        </div>
+                    }
+
+
+                    @* File Input section *@
+                    <div id="fileUpload">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <input id="uploadFile" name="file" class="form-control" type="file" />
+                                <label for="uploadFile" class="btn btn-primary">Upload Video</label>
+                            </div>
+                            @Html.TextBoxFor(m => m.PhotoURL, new { @class = "form-control", @readonly = true})
+                        </div>
+                        @Html.ValidationMessageFor(m => m.PhotoURL, "", new { @class = "text-danger" })
+                    </div>
+
+                    @* Load picture  *@
+                    <div id="loadpic" class="form-group text-center d-none mt-2">
+                        <img src="/Resources/Img/loader-s.gif" width="100" height="100" alt="Loading...">
+                    </div>
+
+                    @* Progress Bar  *@
+                    <div id="loadbar" class="d-none">
+                        <span>Uploading...</span>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 0%;">
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Video frame section *@
+                    <div class="form-group image-block embed-responsive embed-responsive-16by9 d-none" id="photoFrame">
+                        <img src="@Model.PhotoURL" class="embed-responsive-item">
+                        <div class="overlay"></div>
+                        <div class="container-fluid text text-center">
+                            <button class="btn btn-primary h6 mt-4" type="button" onclick="otherVideo()">Other Photo</button>
+                        </div>
+                    </div>
+                </div>
+                   
+                <div class="modal-footer">
+                    <input type="submit" value="Save Changes" class="btn btn-default" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+    //Form Validation
+    function AjaxValidate() {
+        var dtNow = new Date();
+        var startDate = new Date($("#StartTime").val());
+        var endDate = new Date($("#EndTime").val());
+        if (dtNow > startDate) {
+            $('#StartTime').parent().next().children("span:first").html("Date should be bigger than today's date");
+            return false;
+        }else if(dtNow > endDate) {
+            $('#EndTime').parent().next().children("span:first").html("Date should be bigger than today's date");
+            return false;
+        }else if(startDate > endDate) {
+            $('#EndTime').parent().next().children("span:first").html("The end date should be bigger than start date");
+            return false;
+        }
+        return true;
+    }
+
+    //Hide modal if success
+    function AjaxSuccess() {
+        $("#eventModal").modal("hide");
+    }
+
+
+    //Other Video
+    function otherVideo() {
+        var url = $("#PhotoURL").val();
+        $("#PhotoURL").val("");
+        $("#fileUpload").removeClass("d-none");
+        $("#photoFrame").addClass("d-none");
+        $("#photoFrame img").attr("src", null);
+
+        if (url.includes("/Resources/UploadedImg/")) {
+            $.ajax({
+                type: "GET",
+                url: 'RemoveFiles',
+                data: { url: url },
+                contentType: 'application/json; charset=utf-8'
+            });
+        }
+    }
+
+
+    $(document).ready(function () {
+        if ($("#Id").val() != 0) {
+            $("#fileUpload").addClass("d-none");
+            $("#photoFrame").removeClass("d-none");
+        }
+        
+        $('#uploadFile').fileupload({
+            dataType: 'json',
+            url: 'UploadFiles',
+            autoUpload: true,
+            add: function (e, data) {
+                $("#fileUpload").addClass("d-none");
+                $("#loadbar").removeClass("d-none");
+                data.submit();
+            },
+            done: function (e, data) {
+                var url = data.result.mediaURL;
+                $("#PhotoURL").val(url)
+                $("#photoFrame img").attr("src", url);
+                $("#loadpic").addClass("d-none");
+                $("#photoFrame").removeClass("d-none");
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#loadbar .progress-bar').css('width', progress + '%').html(progress + '%');
+                if(progress == 100)
+                {
+                    $("#loadbar").addClass("d-none");
+                    $("#loadpic").removeClass("d-none");
+                }
+
+            }
+        });
+    });
+
+</script>
+
+@Scripts.Render("~/bundles/jqueryval")
+
+
+
+
+
+
+
+
+
+
+
+

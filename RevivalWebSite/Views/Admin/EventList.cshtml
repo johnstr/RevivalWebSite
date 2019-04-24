@@ -1,0 +1,33 @@
+﻿@using RevivalWebSite.Models
+@model List<Event>
+
+@{
+    Layout = null;
+}
+
+@if (Model.Count == 0)
+{
+    <div class="jumbotron">
+        <span class="h5">No events found</span>
+    </div>
+}
+else
+{
+    <div class="row merge-close">
+        <div class="col-lg-6">
+            @{var mid = (int)Math.Round((double)Model.Count / 2, MidpointRounding.AwayFromZero); }
+            @for (var i = 0; i < mid; i++)
+            {
+                Html.RenderPartial("../Partials/EventPartial", Model[i]);
+            }
+        </div>
+        <div class="col-lg-6">
+            @for (var i = mid; i < Model.Count; i++)
+            {
+                Html.RenderPartial("../Partials/EventPartial", Model[i]);
+            }
+        </div>
+    </div>
+
+}
+
