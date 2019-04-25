@@ -8,7 +8,7 @@
 
 <div class="row mt-nav">
     <nav class="navbar navbar-light bg-light  justify-content-between w-100 mb-3">
-        @using (Ajax.BeginForm("SearchEvent", null, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "eventList", InsertionMode = InsertionMode.Replace, LoadingElementId = "loader" }, new { @class = "form-inline" }))
+        @using (Ajax.BeginForm("SearchUser", null, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "userList", InsertionMode = InsertionMode.Replace, LoadingElementId = "loader" }, new { @class = "form-inline" }))
         {
             <div class="input-group">
                 <input type="text" name="search" class="form-control" placeholder="Search">
@@ -89,7 +89,7 @@
         function editSuccess(result) {
             $('#editModal').modal('hide');
             if (result.redirectTo) {
-                location.replace(result.redirectTo);
+                refreshUserList(result.redirectTo);
             }
             else {
                 $("#dialogPlaceholder").html(result);

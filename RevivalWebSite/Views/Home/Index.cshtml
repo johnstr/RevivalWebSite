@@ -17,7 +17,6 @@
             </div>
         </div>
     </section>
-
 }
 
 
@@ -101,7 +100,7 @@
                         {
                         <div class="card-body">
                             <span class="card-title h6">
-                                <a href="Events">@evnt.Name</a>
+                                <a href="@Url.Action("Events", "Home")">@evnt.Name</a>
                             </span>
                             <p class="card-text">@(evnt.About.Substring(0, Math.Min(evnt.About.Length, 100)) + "...")</p>
                         </div>
@@ -110,7 +109,7 @@
                         {
                             <div class="card-body">
                                 <span class="card-title h6">
-                                    <a href="Events">@evnt.Name_ENG</a>
+                                    <a href="@Url.Action("Events", "Home")">@evnt.Name_ENG</a>
                                 </span>
                                 <p class="card-text">@(evnt.About_ENG.Substring(0, Math.Min(evnt.About_ENG.Length, 100)) + "...")</p>
                             </div>
@@ -121,7 +120,7 @@
         <div class="col-lg-3 col-sm-6 d-flex align-items-center">
             <div class="p-2 container text-center">
                 <h4>@HomeTexts.UpcomingEvents</h4>
-                <h6 class="mt-5"><a href="Events">@HomeTexts.SeeMore</a></h6>
+                <h6 class="mt-5"><a href="@Url.Action("Events", "Home")">@HomeTexts.SeeMore</a></h6>
             </div>
         </div>
     </div>
@@ -142,7 +141,7 @@
             </div>
 
 
-            <a href="#" class="p-2">
+            <a href="Home/Ministries" class="p-2">
                 <div class="image-block">
                     <div class="img" style="background-image: url('../../Resources/Img/moldmeet.JPG')"></div>
                     <div class="overlay dark"></div>
@@ -151,18 +150,8 @@
                     </div>
                 </div>
             </a>
-
-            <a href="#" class="p-2">
-                <div class="image-block">
-                    <div class="img" style="background-image: url('img/snowchurch.jpg')"></div>
-                    <div class="overlay dark"></div>
-                    <div class="container-fluid text text-center">
-                        <span class="h5">Warriors for the good</span>
-                    </div>
-                </div>
-            </a>
-
-            <a href="#" class="p-2">
+      
+            <a href="/Home/Ministries" class="p-2">
                 <div class="image-block">
                     <div class="img" style="background-image: url('../../Resources/Img/snowchurch.jpg')"></div>
                     <div class="overlay dark"></div>
@@ -173,7 +162,7 @@
             </a>
 
 
-            <a href="#" class="p-2">
+            <a href="/Home/Ministries" class="p-2">
                 <div class="image-block">
                     <div class="img" style="background-image: url('../../Resources/Img/snowchurch.jpg')"></div>
                     <div class="overlay dark"></div>
@@ -183,7 +172,7 @@
                 </div>
             </a>
 
-            <a href="#" class="p-2">
+            <a href="/Home/Ministries" class="p-2">
                 <div class="image-block">
                     <div class="img" style="background-image: url('../../Resources/Img/moldmeet.JPG')"></div>
                     <div class="overlay dark"></div>
@@ -193,7 +182,7 @@
                 </div>
             </a>
 
-            <a href="#" class="p-2">
+            <a href="/Home/Ministries" class="p-2">
                 <div class="image-block">
                     <div class="img" style="background-image: url('../../Resources/Img/snowchurch.jpg')"></div>
                     <div class="overlay dark"></div>
@@ -204,7 +193,7 @@
             </a>
 
 
-            <a href="#" class="p-2">
+            <a href="/Home/Ministries" class="p-2">
                 <div class="image-block">
                     <div class="img" style="background-image: url('../../Resources/Img/moldmeet.JPG')"></div>
                     <div class="overlay dark"></div>
@@ -214,7 +203,7 @@
                 </div>
             </a>
 
-            <a href="#" class="p-2">
+            <a href="/Home/Ministriess" class="p-2">
                 <div class="image-block">
                     <div class="img" style="background-image: url('../../Resources/Img/moldmeet.JPG')"></div>
                     <div class="overlay dark"></div>
@@ -224,7 +213,7 @@
                 </div>
             </a>
 
-            <a href="#" class="p-2">
+            <a href="/Home/Ministries" class="p-2">
                 <div class="image-block">
                     <div class="img" style="background-image: url('../../Resources/Img/snowchurch.jpg')"></div>
                     <div class="overlay dark"></div>
@@ -234,7 +223,7 @@
                 </div>
             </a>
 
-            <a href="#" class="p-2">
+            <a href="/Home/Ministries" class="p-2">
                 <div class="image-block">
                     <div class="img" style="background-image: url('../../Resources/Img/church.jpg')"></div>
                     <div class="overlay dark"></div>

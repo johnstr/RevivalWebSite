@@ -198,6 +198,12 @@ namespace RevivalWebSite.Controllers
             return PartialView("EventList", eventList);
         }
 
+        public ActionResult SearchUser(string search)
+        {
+            var userList = GetUserList().Where(u => u.UserName.Contains(search) || u.FullName.Contains(search)).ToList();
+            return PartialView("UserList", userList);
+        }
+
         [HttpPost]
         public JsonResult UploadFiles(HttpPostedFileBase file)
         {

@@ -207,6 +207,7 @@
         function loginSuccess(result) {
             $('#loginModal').modal('hide');
             if (result.redirectTo) {
+                $('#loader').removeClass("d-none");
                 window.location.href = result.redirectTo;
             } else {
                 $("#dialogPlaceholder").html(result);

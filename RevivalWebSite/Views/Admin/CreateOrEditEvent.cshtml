@@ -106,7 +106,7 @@
                         <div class="input-group">
                             <div class="input-group-btn">
                                 <input id="uploadFile" name="file" class="form-control" type="file" />
-                                <label for="uploadFile" class="btn btn-primary">Upload Video</label>
+                                <label for="uploadFile" class="btn btn-primary">Upload Image</label>
                             </div>
                             @Html.TextBoxFor(m => m.PhotoURL, new { @class = "form-control", @readonly = true})
                         </div>
@@ -132,7 +132,7 @@
                         <img src="@Model.PhotoURL" class="embed-responsive-item">
                         <div class="overlay"></div>
                         <div class="container-fluid text text-center">
-                            <button class="btn btn-primary h6 mt-4" type="button" onclick="otherVideo()">Other Photo</button>
+                            <button class="btn btn-primary h6 mt-4" type="button" onclick="otherVideo()">Other Image</button>
                         </div>
                     </div>
                 </div>

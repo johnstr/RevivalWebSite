@@ -354,6 +354,10 @@ footer {
 	font-size: inherit;
 }
 
+input[type="file"]{
+    display: none;
+}
+
 input[type="file"]+label{
     margin-bottom: 0;
 }

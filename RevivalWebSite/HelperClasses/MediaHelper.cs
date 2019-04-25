@@ -43,8 +43,9 @@ namespace RevivalWebSite.HelperClasses
 
         public static void RemoveMedia(string removeFile)
         {
-            if (File.Exists(removeFile))
-                File.Delete(removeFile);
+            var path = HttpContext.Current.Server.MapPath(removeFile);
+            if (File.Exists(path))
+                File.Delete(path);
         }
 
         //Formats youtube video link to embeded
